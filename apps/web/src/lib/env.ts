@@ -11,10 +11,17 @@ export interface SupabaseEnv {
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
-  return { url, anonKey };
+  const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  if (!rawUrl || !anonKey) return null;
+  // Accept "ref.supabase.co" or ".../rest/v1/" and normalise to the project origin.
+  const withScheme = /^https?:\/\//i.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+  try {
+    return { url: new URL(withScheme).origin, anonKey };
+  } catch {
+    console.warn("NEXT_PUBLIC_SUPABASE_URL is not a valid URL; Supabase features are disabled.");
+    return null;
+  }
 }
 
 export function isSupabaseConfigured(): boolean {
