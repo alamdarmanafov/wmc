@@ -16,7 +16,12 @@ npx supabase db reset        # migrations + seed
 npx supabase status          # URLs and keys for the apps
 ```
 
-## Production
+## Production — three ways to apply the schema
+**A. SQL Editor (no tooling):** open Dashboard → SQL Editor, paste the whole `supabase/schema.sql` (all migrations bundled, regenerate with `npm run db:bundle`) and Run. Optionally run `seed.sql` afterwards for demo data.
+
+**B. GitHub Action:** add repository secrets `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `SUPABASE_PROJECT_REF`; the workflow `.github/workflows/supabase-migrate.yml` then applies new migrations on every push to `main` (and manually via *Run workflow*, with an optional seed).
+
+**C. CLI from your machine:**
 ```bash
 npx supabase link --project-ref <ref>
 npx supabase db push
