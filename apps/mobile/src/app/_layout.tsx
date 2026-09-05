@@ -3,13 +3,13 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Image, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ToastProvider } from '@/components/ui';
 import { AuthProvider, useAuth } from '@/lib/auth';
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { theme } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -19,6 +19,9 @@ const queryClient = new QueryClient({
 });
 
 export default function RootLayout() {
+  if (!isSupabaseConfigured) {
+    return <SetupScreen />;
+  }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -34,6 +37,42 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+/** Shown when EXPO_PUBLIC_SUPABASE_* are missing, so the app opens without a backend. */
+function SetupScreen() {
+  useEffect(() => {
+    void SplashScreen.hideAsync();
+  }, []);
+  return (
+    <View style={setupStyles.root}>
+      <StatusBar style="dark" />
+      <Image source={require('@/assets/images/logo.png')} style={setupStyles.logo} />
+      <Text style={setupStyles.title}>WMC is not connected yet</Text>
+      <Text style={setupStyles.body}>
+        Copy <Text style={setupStyles.code}>apps/mobile/.env.example</Text> to{' '}
+        <Text style={setupStyles.code}>.env</Text>, set{' '}
+        <Text style={setupStyles.code}>EXPO_PUBLIC_SUPABASE_URL</Text> and{' '}
+        <Text style={setupStyles.code}>EXPO_PUBLIC_SUPABASE_ANON_KEY</Text>, then restart Expo.
+      </Text>
+      <Text style={setupStyles.hint}>See supabase/README.md for creating the project.</Text>
+    </View>
+  );
+}
+
+const setupStyles = StyleSheet.create({
+  root: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+    backgroundColor: theme.colors.background,
+  },
+  logo: { width: 88, height: 88, marginBottom: 24 },
+  title: { fontSize: 22, fontWeight: '700', color: theme.colors.text, marginBottom: 12, textAlign: 'center' },
+  body: { fontSize: 15, lineHeight: 22, color: theme.colors.textSecondary, textAlign: 'center' },
+  code: { fontFamily: 'monospace', color: theme.colors.text },
+  hint: { marginTop: 16, fontSize: 13, color: theme.colors.textSecondary },
+});
 
 const TOUCH_INTERVAL_MS = 30 * 60 * 1000;
 

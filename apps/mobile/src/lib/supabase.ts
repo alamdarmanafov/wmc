@@ -8,20 +8,25 @@ import type { Database } from './database.types';
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!url || !anonKey) {
-  throw new Error(
-    'Missing Supabase config. Copy apps/mobile/.env.example to apps/mobile/.env and set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY.',
-  );
-}
+/**
+ * True when both env vars are present. When false the app renders a setup
+ * screen instead of the product (see app/_layout.tsx) so it can still be
+ * opened without a Supabase project.
+ */
+export const isSupabaseConfigured = Boolean(url && anonKey);
 
-export const supabase = createClient<Database>(url, anonKey, {
+export const supabase = createClient<Database>(
+  url ?? 'https://not-configured.supabase.co',
+  anonKey ?? 'not-configured',
+  {
   auth: {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
   },
-});
+  },
+);
 
 // Refresh tokens only while the app is in the foreground.
 AppState.addEventListener('change', (state) => {
