@@ -16,6 +16,7 @@ A community platform for Muslims to discover people, activities and communities 
 | [`apps/web`](apps/web) | Landing page (`/`) + admin panel (`/admin`) | Next.js 16 · Tailwind v4 · @supabase/ssr |
 | [`packages/shared`](packages/shared) | Brand tokens, constants, domain types, utils used by both apps | TypeScript |
 | [`supabase`](supabase) | Schema, triggers, RLS, RPCs (matching, inbox, admin stats), seed, Edge Function for push, smoke tests | Postgres 17 · PostGIS · pg_cron |
+| [`services/push-webhook`](services/push-webhook) | Push notification webhook for self-hosted Supabase (Railway) | Node |
 | [`docs`](docs) | **Developer Specification v1.0** — product, every screen, database, API/RLS, matching, admin, brand, landing, roadmap, AI master prompt | Markdown |
 | `icon.png` | Master logo (1254×1254). All app/web icon variants are generated from it | |
 
@@ -49,6 +50,10 @@ There is no custom API server. Both apps talk to Supabase directly; every rule t
 
 ## Brand
 Deep green `#0B4A3F` on warm white `#FAF9F5`, Inter, rounded cards, lots of whitespace. The logo is three figures forming a **W** — people, connection, world. See [docs/07-brand.md](docs/07-brand.md).
+
+## Deploying
+- **Web on Railway / Docker**: root `Dockerfile` + `railway.json` build the Next.js standalone bundle. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- **Backend**: hosted Supabase (`supabase/README.md`) or self-hosted Supabase on Railway (`docs/11-railway-deployment.md`) — no code changes either way.
 
 ## Roadmap
 Phases 1–6 (foundation → admin) are implemented here. Launch prep (store listings, OAuth credentials, EAS builds, pg_cron jobs, push webhook) is checklisted in [docs/09-roadmap.md](docs/09-roadmap.md). Monetization (WMC Plus, B2B) comes after product-market fit.

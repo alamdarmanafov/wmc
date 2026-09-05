@@ -1,0 +1,13 @@
+node_modules
+**/node_modules
+**/.next
+**/.expo
+**/dist
+.git
+docs
+supabase
+*.md
+!apps/web/README.md
+apps/mobile/src
+apps/mobile/assets
+.env*
