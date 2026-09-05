@@ -16,7 +16,8 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:push": "supabase db push",
-    "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts"
+    "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
+    "db:bundle": "bash -c 'cd supabase && { echo \"-- =============================================================================\"; echo \"-- WMC — combined schema for the Supabase SQL Editor (generated from migrations/)\"; echo \"-- Paste the whole file into Dashboard → SQL Editor → Run, on a fresh project.\"; echo \"-- Regenerate: npm run db:bundle\"; echo \"-- =============================================================================\"; for f in migrations/*.sql; do echo; echo \"-- >>> $f\"; cat \"$f\"; done; } > schema.sql'"
   },
   "engines": {
     "node": ">=20"
