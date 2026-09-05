@@ -2,7 +2,7 @@
   "name": "wmc",
   "private": true,
   "version": "0.1.0",
-  "description": "WMC — World Muslim Community. Find your people, wherever you are.",
+  "description": "WMC \u2014 World Muslim Community. Find your people, wherever you are.",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -17,7 +17,9 @@
     "db:reset": "supabase db reset",
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
-    "db:bundle": "bash -c 'cd supabase && { echo \"-- =============================================================================\"; echo \"-- WMC — combined schema for the Supabase SQL Editor (generated from migrations/)\"; echo \"-- Paste the whole file into Dashboard → SQL Editor → Run, on a fresh project.\"; echo \"-- Regenerate: npm run db:bundle\"; echo \"-- =============================================================================\"; for f in migrations/*.sql; do echo; echo \"-- >>> $f\"; cat \"$f\"; done; } > schema.sql'"
+    "db:bundle": "bash -c 'cd supabase && { echo \"-- =============================================================================\"; echo \"-- WMC \u2014 combined schema for the Supabase SQL Editor (generated from migrations/)\"; echo \"-- Paste the whole file into Dashboard \u2192 SQL Editor \u2192 Run, on a fresh project.\"; echo \"-- Regenerate: npm run db:bundle\"; echo \"-- =============================================================================\"; for f in migrations/*.sql; do echo; echo \"-- >>> $f\"; cat \"$f\"; done; } > schema.sql'",
+    "admin": "npm run dev --workspace apps/admin",
+    "build:admin": "npm run build --workspace apps/admin"
   },
   "engines": {
     "node": ">=20"

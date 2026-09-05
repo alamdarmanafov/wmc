@@ -10,7 +10,7 @@ NOT a dating app. Activity-first. Privacy-first. Tone: warm, minimal, premium (A
 
 Stack
 - apps/mobile: Expo SDK 57, expo-router (src/app), TypeScript strict, @tanstack/react-query, supabase-js.
-- apps/web: Next.js 16 App Router, Tailwind v4, @supabase/ssr. Landing page at "/", admin at "/admin".
+- apps/web: Next.js 16 App Router, Tailwind v4 — landing page. apps/admin: separate Next.js app, @supabase/ssr — admin panel.
 - packages/shared: brand tokens (colors), constants (INTERESTS, LOOKING_FOR, COMMUNITY_CATEGORIES,
   REPORT_REASONS, LANGUAGES, LAUNCH_CITIES, MATCH_WEIGHTS, LIMITS), domain types, utils. Import from '@wmc/shared'.
 - supabase/: migrations are the source of truth for schema, triggers, RLS and RPCs. No custom backend.

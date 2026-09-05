@@ -1,12 +1,12 @@
-# 06 · Admin panel (`apps/web/src/app/admin`)
+# 06 · Admin panel (`apps/admin`, separate deployment)
 
 Roles: `profiles.role` — `user` (default) · `moderator` (read all, moderate content & reports) · `admin` (everything, user status/roles, cities). First admin: `update public.profiles set role = 'admin' where id = '<uuid>';`
 
-Login: `/admin/login` (email/password or Google). Sessions handled by `@supabase/ssr`; `/admin/*` is protected in `src/proxy.ts`. Non-staff users see *Access denied*.
+Login: `/login` (email/password or Google). Sessions handled by `@supabase/ssr`; every route is protected in `src/proxy.ts`. Non-staff users see *Access denied*. The admin app is deployed separately from the landing site (own Vercel project / domain).
 
 | Page | Data | Actions |
 |---|---|---|
-| **Dashboard** | `admin_dashboard_stats()` tiles: total users, active 7d/30d, new 7d/30d, communities (+pending), events (+upcoming/pending), connections, messages, pending reports, retention D7/D30. Chart: `admin_signups_by_day(30)` | — |
+| **Dashboard** (`/`) | `admin_dashboard_stats()` tiles: total users, active 7d/30d, new 7d/30d, communities (+pending), events (+upcoming/pending), connections, messages, pending reports, retention D7/D30. Chart: `admin_signups_by_day(30)` | — |
 | **Users** | search by name, filter by status; detail page with interests, communities, events, reports, audit | Suspend · Ban · Reactivate (reason) · Verify · Change role (admin only) |
 | **Communities** | tabs pending / approved / rejected | Approve · Reject · Feature · Edit · Delete · Create |
 | **Events** | filters status/city/upcoming | Approve · Reject · Cancel · Feature · Delete |

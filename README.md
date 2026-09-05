@@ -13,7 +13,8 @@ A community platform for Muslims to discover people, activities and communities 
 | Path | What | Stack |
 |---|---|---|
 | [`apps/mobile`](apps/mobile) | iOS / Android app: onboarding, Home, Meet People, Communities, Events, "Join me", chat, notifications, safety | Expo SDK 57 · expo-router · react-query · supabase-js |
-| [`apps/web`](apps/web) | Landing page (`/`) + admin panel (`/admin`) | Next.js 16 · Tailwind v4 · @supabase/ssr |
+| [`apps/web`](apps/web) | Landing page + legal pages + waitlist API | Next.js 16 · Tailwind v4 |
+| [`apps/admin`](apps/admin) | Admin panel (users, communities, events, reports, cities, analytics) | Next.js 16 · Tailwind v4 · @supabase/ssr |
 | [`packages/shared`](packages/shared) | Brand tokens, constants, domain types, utils used by both apps | TypeScript |
 | [`supabase`](supabase) | Schema, triggers, RLS, RPCs (matching, inbox, admin stats), seed, Edge Function for push, smoke tests | Postgres 17 · PostGIS · pg_cron |
 | [`docs`](docs) | **Developer Specification v1.0** — product, every screen, database, API/RLS, matching, admin, brand, landing, roadmap, AI master prompt | Markdown |
@@ -34,8 +35,10 @@ cp apps/mobile/.env.example apps/mobile/.env   # EXPO_PUBLIC_SUPABASE_URL / _ANO
 npm run mobile                   # expo start
 
 # Web (landing + admin)
-cp apps/web/.env.example apps/web/.env.local   # NEXT_PUBLIC_SUPABASE_URL / _ANON_KEY
-npm run web                      # http://localhost:3000  · admin at /admin
+cp apps/web/.env.example apps/web/.env.local     # SUPABASE_URL / SUPABASE_ANON_KEY
+cp apps/admin/.env.example apps/admin/.env.local # same two values
+npm run web                      # landing at http://localhost:3000
+npm run admin                    # admin panel (separate app)
 
 # Checks
 npm run typecheck                # all workspaces
@@ -51,7 +54,7 @@ There is no custom API server. Both apps talk to Supabase directly; every rule t
 Deep green `#0B4A3F` on warm white `#FAF9F5`, Inter, rounded cards, lots of whitespace. The logo is three figures forming a **W** — people, connection, world. See [docs/07-brand.md](docs/07-brand.md).
 
 ## Deploying
-- **Web**: Vercel, Root Directory `apps/web`, Framework Next.js. Env: `SUPABASE_URL` and `SUPABASE_ANON_KEY` (or the `NEXT_PUBLIC_` variants).
+- **Web + Admin**: two Vercel projects from this repo — Root Directory `apps/web` (site) and `apps/admin` (admin), Framework Next.js. Env for both: `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
 - **Backend**: hosted Supabase — apply the schema per `supabase/README.md`.
 
 ## Roadmap
