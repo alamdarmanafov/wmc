@@ -8,8 +8,9 @@
  *   KEY: NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_ANON_KEY,
  *        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, SUPABASE_PUBLISHABLE_KEY,
  *        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
- * The landing site only talks to Supabase from the server (waitlist API), so
- * non-prefixed names are enough here.
+ * The non-prefixed names exist so hosts that refuse to store NEXT_PUBLIC_* values
+ * (Vercel's "public prefix" guard) still work: the server reads them and the root
+ * layout hands the two public values to the browser via `window.__WMC_ENV__`.
  *
  * `process.env.NEXT_PUBLIC_*` must be referenced literally so Next.js can inline it
  * into client bundles.
@@ -17,6 +18,17 @@
 export interface SupabaseEnv {
   url: string;
   anonKey: string;
+}
+
+declare global {
+  interface Window {
+    __WMC_ENV__?: Partial<SupabaseEnv>;
+  }
+}
+
+function fromBrowser(): Partial<SupabaseEnv> {
+  if (typeof window === "undefined") return {};
+  return window.__WMC_ENV__ ?? {};
 }
 
 function firstNonEmpty(...values: Array<string | undefined>): string | undefined {
@@ -38,9 +50,11 @@ export function normaliseSupabaseUrl(raw: string): string | null {
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
+  const browser = fromBrowser();
   const rawUrl = firstNonEmpty(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_URL,
+    browser.url,
   );
   const anonKey = firstNonEmpty(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -48,6 +62,7 @@ export function getSupabaseEnv(): SupabaseEnv | null {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     process.env.SUPABASE_PUBLISHABLE_KEY,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY,
+    browser.anonKey,
   );
   if (!rawUrl || !anonKey) return null;
   const url = normaliseSupabaseUrl(rawUrl);

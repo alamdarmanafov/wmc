@@ -22,7 +22,8 @@ Repository map:
 
 ```
 apps/mobile      Expo (React Native) app — iOS / Android
-apps/web         Next.js — landing page + /admin panel
+apps/web         Next.js — landing page
+apps/admin       Next.js — admin panel (separate deployment)
 packages/shared  Brand tokens, constants, domain types shared by both apps
 supabase/        Postgres migrations, RLS, RPCs, seed, Edge Function, smoke tests
 docs/            This specification
