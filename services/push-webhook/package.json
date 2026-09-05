@@ -1,0 +1,15 @@
+{
+  "name": "wmc-push-webhook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Receives Supabase database webhooks for public.notifications and sends Expo push notifications",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.115.0"
+  }
+}
