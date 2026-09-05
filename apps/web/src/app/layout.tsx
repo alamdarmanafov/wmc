@@ -9,7 +9,31 @@ const inter = Inter({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wmc.app";
+/**
+ * Public site origin for metadata. Tolerates an empty value, a missing scheme
+ * ("wmc.vercel.app") or a path, and falls back to Vercel's URL, then to the brand domain.
+ */
+function resolveSiteUrl(): string {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+    "https://wmc.app",
+  ];
+  for (const raw of candidates) {
+    const value = raw?.trim();
+    if (!value) continue;
+    const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    try {
+      return new URL(withScheme).origin;
+    } catch {
+      // try the next candidate
+    }
+  }
+  return "https://wmc.app";
+}
+
+const siteUrl = resolveSiteUrl();
 const title = `${brand.name} — ${brand.fullName}`;
 const description = `${brand.tagline} ${brand.positioning}`;
 
