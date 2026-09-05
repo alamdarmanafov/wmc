@@ -17,7 +17,6 @@ A community platform for Muslims to discover people, activities and communities 
 | 08 | [Landing page](./08-landing.md) | Section-by-section copy and structure |
 | 09 | [Roadmap & launch](./09-roadmap.md) | Phases, city rollout, monetization later, out-of-scope |
 | 10 | [AI master prompt](./10-master-prompt.md) | Ready-to-paste prompt for building features with an AI coding agent |
-| 11 | [Railway deployment](./11-railway-deployment.md) | Self-hosted Supabase + web + push service on Railway |
 
 Repository map:
 
@@ -26,7 +25,6 @@ apps/mobile      Expo (React Native) app — iOS / Android
 apps/web         Next.js — landing page + /admin panel
 packages/shared  Brand tokens, constants, domain types shared by both apps
 supabase/        Postgres migrations, RLS, RPCs, seed, Edge Function, smoke tests
-services/        push-webhook: Node replacement for the Edge Function on self-hosted Supabase
 docs/            This specification
 icon.png         Master logo (1254×1254)
 ```
